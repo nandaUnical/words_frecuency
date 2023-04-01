@@ -1,4 +1,5 @@
 import pytest
+import code
 
 def test_nothing ():
-    pass
+    assert code.sum(3,5) == 8
