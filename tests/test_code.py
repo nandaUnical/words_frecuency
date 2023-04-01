@@ -1,5 +1,5 @@
 import pytest
-import app_code.code
+import app_code.code as cd
 
 def test_nothing ():
-    assert sum(3,5) == 8
+    assert cd.sum(3,5) == 8
