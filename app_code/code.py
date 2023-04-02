@@ -19,6 +19,9 @@ def read_dir_frec (dir_path):
                         frecuency[w] += 1
                     else:
                         frecuency[w] = 1
+    
+    #ordenar dict por valores en orden desc
+    frecuency = dict(sorted(frecuency.items(),key=lambda x:x[1],reverse=True))
     return frecuency
 
 #calcular la frecuencia de las palabras dado una lista de ficheros
@@ -35,6 +38,8 @@ def read_file_list_frec ():
             else:
                 frecuency[w] = 1
 
+    #ordenar dict por valores en orden desc
+    frecuency = dict(sorted(frecuency.items(),key=lambda x:x[1],reverse=True))
     return frecuency
 
 if __name__ == "__main__":
@@ -42,6 +47,8 @@ if __name__ == "__main__":
         frec = read_dir_frec(sys.argv[1])
     else:
         frec = read_file_list_frec()
+
+    print(frec)
 
     #guardar las frecuencias en un .csv
     with open("..\\ejemplos\\frecuency.csv","w",newline="") as fp:
