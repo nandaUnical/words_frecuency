@@ -113,14 +113,80 @@ def download_book ():
             print("The books have been downloaded. Check the local directory...")
 
         elif option == "2" :
-            pass
+            counter = 0
+            lang = input("Enter the code of the languages separated by & in case there are two or more...")
+            res = requests.get('https://gutendex.com/books?languages='+str(lang))
+            res = json.loads(res.text)
+            print("There are "+str(res["count"])+" books.")
+            q = input ("Do you wanna list them?\t")
+            if q.lower()=="yes":
+              temp = res["results"]
+              for i in temp :
+                counter = counter +1
+                print ("Book title "+str(counter)+": ", i["title"], "\tID: ", i["id"])
+              while str(res["next"]) != "None" :
+                res = requests.get(str(res["next"]))
+                res = json.loads(res.text)
+                temp = res["results"]
+                for i in temp :
+                  counter = counter +1
+                  print ("Book title"+str(counter)+": ", i["title"], "\tID: ", i["id"])
+            else:
+              pass
         elif option == "3" :
-            pass
+            counter = 0
+            lang = ""
+            words = input("Enter the words you want to search separated by comma...")
+            words = words.split(", ")
+            for w in words:
+              lang += w+"%20"
+            res = requests.get('https://gutendex.com/books?search='+lang[:-3])
+            res = json.loads(res.text)
+            print("There are "+str(res["count"])+" books.")
+            q = input ("Do you wanna list them?\t")
+            if q.lower()=="yes":
+              temp = res["results"]
+              for i in temp :
+                counter = counter +1
+                print ("Book title "+str(counter)+": ", i["title"], "\tID: ", i["id"])
+              while str(res["next"]) != "None" :
+                res = requests.get(str(res["next"]))
+                res = json.loads(res.text)
+                temp = res["results"]
+                for i in temp :
+                  counter = counter +1
+                  print ("Book title"+str(counter)+": ", i["title"], "\tID: ", i["id"])
+            else:
+              pass
         elif option == "4":
-            pass
+            counter = 0
+            lang = ""
+            words = input("Enter the words you want to search separated by comma...")
+            words = words.split(", ")
+            for w in words:
+              lang += w+"%20"
+            res = requests.get('https://gutendex.com/books?topic='+lang[:-3])
+            res = json.loads(res.text)
+            print("There are "+str(res["count"])+" books.")
+            q = input ("Do you wanna list them?\t")
+            if q.lower()=="yes":
+              temp = res["results"]
+              for i in temp :
+                counter = counter +1
+                print ("Book title "+str(counter)+": ", i["title"], "\tID: ", i["id"])
+              while str(res["next"]) != "None" :
+                res = requests.get(str(res["next"]))
+                res = json.loads(res.text)
+                temp = res["results"]
+                for i in temp :
+                  counter = counter +1
+                  print ("Book title"+str(counter)+": ", i["title"], "\tID: ", i["id"])
+            else:
+              pass
         elif option == "5":
             exit_menu_value = True
             print("***************LEAVING DOWNLOAD MENU*********************")
+            break
         
         input("\nPress enter to continue...")
 
@@ -170,6 +236,7 @@ if __name__ == "__main__":
         elif option == "5":
             exit_value = True
             print("*******************BYE BYE*********************")
+            break
 
         input("\nPress enter to continue...")
     
