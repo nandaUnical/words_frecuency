@@ -4,6 +4,8 @@ import re
 import os
 import pickle
 import matplotlib.pyplot as plt
+import requests
+import json
 
 #calcular la frecuencia de las palabras dado un directorio
 def read_dir_frec (dir_path):
@@ -75,6 +77,53 @@ def k_frequent_histogram (k,file_dir):
 
     plt.bar(frec.keys(), frec.values(), 0.50, color='g')
     plt.show()
+
+#Descargar libros de project gutenberg segun varios criterios de busqueda
+def download_book ():
+    #Menu de opciones de descarga
+    exit_menu_value = False
+    while exit_menu_value == False:
+        print("\n\n********YOU HAVE THE FOLLOWING DOWLOAD OPTIONS*********")
+        print("1.Download by book ID.")
+        print("2.Search by language.")
+        print("3.Search words in the titles and authors.")
+        print("4.Search by topic.")
+        print("5.Exit")
+        print("***********************************************************")
+        option = input("Choose an option...")
+        correct = False
+        while ( correct == False ):
+            if option.isdigit():
+                if int(option) < 0 or int(option) > 5 :
+                    option = input("Choose a correct option...")
+                else:
+                    correct = True
+            else:
+                option = input("Choose a correct option...")
+
+        if option == "1" :
+            ids = input('Enter the Project Gutenberg IDs of the books you want to download separated by comma...')
+            res = requests.get('https://gutendex.com/books?ids='+str(ids))
+            res = json.loads(res.text)
+            temp = res["results"]
+            for i in temp :
+              url = i["formats"]["application/epub+zip"]
+              t = requests.get(str(url), allow_redirects=True)
+              open('..\\downloaded_books\\book_id_'+str(i["id"])+'.epub', 'wb').write(t.content)
+            print("The books have been downloaded. Check the local directory...")
+
+        elif option == "2" :
+            pass
+        elif option == "3" :
+            pass
+        elif option == "4":
+            pass
+        elif option == "5":
+            exit_menu_value = True
+            print("***************LEAVING DOWNLOAD MENU*********************")
+        
+        input("\nPress enter to continue...")
+
     
 
 #Programa principal --------------------------------------------
@@ -117,7 +166,7 @@ if __name__ == "__main__":
         elif option == "3" :
             k_frequent_histogram(k=input("Enter the number of words..."),file_dir='..\\ejemplos\\frec_data.pkl')
         elif option == "4":
-            pass
+            download_book()
         elif option == "5":
             exit_value = True
             print("*******************BYE BYE*********************")
