@@ -50,7 +50,8 @@ def most_frequent (k,file_dir):
     #cargar el diccionario guardado en el pkl file
     with open(file_dir, 'rb') as fp:
         frec = pickle.load(fp)
-
+    if k > len(frec):
+       print ( "There are not "+str(k)+" words in the vocabulary..." )
     res = dict(list(frec.items())[0:int(k)])
     print("\nThe most frequent words in the collection of documents are:")
     for w in res.keys():
@@ -208,32 +209,35 @@ if __name__ == "__main__":
 
     while (exit_value == False):
         print("\n\n********YOU HAVE THE FOLLOWING OPTIONS*********")
-        print("1.Show the k most frequent words.")
-        print("2.Show the frequency of a word in the collection.")
-        print("3.Plot an histogram for the k most frequents words.")
-        print("4.Download a book from Project Gutenberg's free e-book collection.")
-        print("5.Exit")
+        print("1.Show all words frequencies.")
+        print("2.Show the k most frequent words.")
+        print("3.Show the frequency of a word in the collection.")
+        print("4.Plot an histogram for the k most frequents words.")
+        print("5.Download a book from Project Gutenberg's free e-book collection.")
+        print("6.Exit")
         print("***********************************************")
         option = input("Choose an option...")
         correct = False
         while ( correct == False ):
             if option.isdigit():
-                if int(option) < 0 or int(option) > 5 :
+                if int(option) < 0 or int(option) > 6 :
                     option = input("Choose a correct option...")
                 else:
                     correct = True
             else:
                 option = input("Choose a correct option...")
-            
-        if option == "1" :
-            most_frequent(k=input("Enter the number of words..."),file_dir='..\\ejemplos\\frec_data.pkl')
+
+        if option == "1":
+           print(frec)    
         elif option == "2" :
-            how_many(word=input("Enter a word to search for..."),file_dir='..\\ejemplos\\frec_data.pkl')
+            most_frequent(k=input("Enter the number of words..."),file_dir='..\\ejemplos\\frec_data.pkl')
         elif option == "3" :
+            how_many(word=input("Enter a word to search for..."),file_dir='..\\ejemplos\\frec_data.pkl')
+        elif option == "4" :
             k_frequent_histogram(k=input("Enter the number of words..."),file_dir='..\\ejemplos\\frec_data.pkl')
-        elif option == "4":
-            download_book()
         elif option == "5":
+            download_book()
+        elif option == "6":
             exit_value = True
             print("*******************BYE BYE*********************")
             break
