@@ -32,7 +32,7 @@ def read_file_list_frec ():
     
     frecuency = {} #dict para guardar las frecuencias
     
-    for line in fileinput.input(encoding="utf-8"):#iterando sobre los sys.argv
+    for line in fileinput.input(encoding="utf-8"):#iterando linea a linea de los sys.argv
         l = re.sub(r'[.,"\'-?:!;]', '', line)#eliminando signos de puntuacion
         words = l.lower().split()#lower case y separando por palabras
         for w in words:
