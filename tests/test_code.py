@@ -5,7 +5,7 @@ import app_code.code as cd
 from pathlib import Path
 import os
 
-BASE_DIR = Path('C:\Users\hp\Documents\!Master\Agile\!!Second Apello\!proyecto\words_frecuency').resolve().parent
+BASE_DIR = Path(r'C:\Users\hp\Documents\!Master\Agile\!!Second Apello\!proyecto\words_frecuency').resolve().parent
 os.path.join(BASE_DIR, "ejemplos")
 #final_path = os.path.join(BASE_DIR, "ejemplos")
 #final_path = os.path.join(BASE_DIR, "ejemplos/data.pkl")
