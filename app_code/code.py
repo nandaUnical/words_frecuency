@@ -57,6 +57,8 @@ def most_frequent (k,file_dir):
     for w in res.keys():
         print("word: ", w, "\tfrequency: ", res[w])
 
+    return res
+
 
 #Mostrar cuantas veces x aparece en el texto
 def how_many (word, file_dir):
