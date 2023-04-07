@@ -64,7 +64,10 @@ def how_many (word, file_dir):
     with open(file_dir, 'rb') as fp:
         frec = pickle.load(fp)
 
-    print("This word appears ", frec[word], " times in the collection.")
+    if word in frec :
+        print("This word appears ", frec[word], " times in the collection.")
+    else:
+       print("This word does not occur in the document collection.")
 
 #Histograma de las k palabras mas frecuentes
 def k_frequent_histogram (k,file_dir):
