@@ -24,14 +24,14 @@ def test_read_dir_frec ():
 
 def test_most_frequent (mocker):
     k = 5
-    file_dir = os.path.join(BASE_DIR, "ejemplos/data.pkl")
+    file_dir = os.path.join(BASE_DIR, "ejemplos\data.pkl")
     printer = mocker.patch('builtins.print')
     cd.most_frequent(k, file_dir)
     assert printer.call_count == k+1
 
 def test_how_many(mocker):
     word = 'bien'
-    file_dir = os.path.join(BASE_DIR, "ejemplos/data.pkl")
+    file_dir = os.path.join(BASE_DIR, "ejemplos\data.pkl")
     printer = mocker.patch('builtins.print')
     cd.how_many(word, file_dir)
     assert printer.call_count == 1
