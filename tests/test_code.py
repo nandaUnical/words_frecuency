@@ -36,12 +36,22 @@ def test_most_frequent_returned_dict ():
     assert cd.most_frequent(k, file_dir) == {'bien': 5, 'todo': 5, 'por': 5, 'hola': 4, 'estan': 4}
     
 
-def test_how_many(mocker):
+def test_how_many_print_call(mocker):
     word = 'bien'
     file_dir = os.path.join(BASE_DIR, "ejemplos/data.pkl")
     printer = mocker.patch('builtins.print')
     cd.how_many(word, file_dir)
     assert printer.call_count == 1
+
+def test_how_many_exist_word():
+    word = 'bien'
+    file_dir = os.path.join(BASE_DIR, "ejemplos/data.pkl")
+    assert cd.how_many(word, file_dir) == True
+
+def test_how_many_not_exist_word():
+    word = 'adivinanza'
+    file_dir = os.path.join(BASE_DIR, "ejemplos/data.pkl")
+    assert cd.how_many(word, file_dir) == False
 
 def test_k_frequent_histogram():
     pass

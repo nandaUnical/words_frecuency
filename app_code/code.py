@@ -68,8 +68,10 @@ def how_many (word, file_dir):
 
     if word in frec :
         print("This word appears ", frec[word], " times in the collection.")
+        return True
     else:
        print("This word does not occur in the document collection.")
+       return False
 
 #Histograma de las k palabras mas frecuentes
 def k_frequent_histogram (k,file_dir):
