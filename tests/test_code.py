@@ -58,9 +58,10 @@ def test_k_frequent_histogram_monkey(monkeypatch):
     k = 5
     frec = {'bien': 5, 'todo': 5, 'por': 5, 'hola': 4, 'estan': 4}
     file_dir = os.path.join(BASE_DIR, "ejemplos/data.pkl")
-    monkeypatch.setattr(plt, 'show', lambda: None)
+    mock_show = lambda: None
+    monkeypatch.setattr(plt, 'show', mock_show)
     cd.k_frequent_histogram (k,file_dir)
-    assert plt.show.called()
+    assert mock_show.show.called()
 
 @pytest.fixture
 def mock_show(mocker):
