@@ -60,7 +60,7 @@ def test_k_frequent_histogram_monkey(monkeypatch):
     file_dir = os.path.join(BASE_DIR, "ejemplos/data.pkl")
     monkeypatch.setattr(plt, 'show', lambda: None)
     cd.k_frequent_histogram (k,file_dir)
-    assert plt.show.called
+    assert plt.show.called()
 
 @pytest.fixture
 def mock_show(mocker):
