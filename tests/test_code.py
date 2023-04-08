@@ -54,14 +54,13 @@ def test_how_many_not_exist_word():
     file_dir = os.path.join(BASE_DIR, "ejemplos/data.pkl")
     assert cd.how_many(word, file_dir) == False
 
-def test_k_frequent_histogram_monkey(monkeypatch):
-    k = 5
-    frec = {'bien': 5, 'todo': 5, 'por': 5, 'hola': 4, 'estan': 4}
-    file_dir = os.path.join(BASE_DIR, "ejemplos/data.pkl")
-    mock_show = lambda: None
-    monkeypatch.setattr(plt, 'show', mock_show)
-    cd.k_frequent_histogram (k,file_dir)
-    assert mock_show.show.called()
+#def test_k_frequent_histogram_monkey(monkeypatch):
+#    k = 5
+#    frec = {'bien': 5, 'todo': 5, 'por': 5, 'hola': 4, 'estan': 4}
+#    file_dir = os.path.join(BASE_DIR, "ejemplos/data.pkl")
+#    mock_show = lambda: None
+#    monkeypatch.setattr(plt, 'show', mock_show)
+#    cd.k_frequent_histogram (k,file_dir)
 
 @pytest.fixture
 def mock_show(mocker):
@@ -72,6 +71,17 @@ def test_k_frequent_histogram_show (mock_show) :
     file_dir = os.path.join(BASE_DIR, "ejemplos/data.pkl")
     cd.k_frequent_histogram (k,file_dir)
     mock_show.assert_called_once()
+
+
+@pytest.fixture
+def mock_bar(mocker):
+    yield mocker.patch('matplotlib.pyplot.bar')
+def test_k_frequent_histogram_show (mock_bar) :
+    k = 5
+    frec = {'bien': 5, 'todo': 5, 'por': 5, 'hola': 4, 'estan': 4}
+    file_dir = os.path.join(BASE_DIR, "ejemplos/data.pkl")
+    cd.k_frequent_histogram (k,file_dir)
+    mock_bar.assert_called_once_with(frec.keys(), frec.values(), 0.50, color='g')
     
 
 
