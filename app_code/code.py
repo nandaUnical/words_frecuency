@@ -83,7 +83,10 @@ def k_frequent_histogram (k,file_dir):
 
     print("Showing histogram...")
 
-    plt.bar(frec.keys(), frec.values(), 0.50, color='g')
+    keys_list = list(frec.keys())
+    values_list = list(frec.values())
+
+    plt.bar(keys_list, values_list, 0.50, color='g')
     plt.show()
 
 #Descargar libros de project gutenberg segun varios criterios de busqueda

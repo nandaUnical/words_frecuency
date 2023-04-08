@@ -78,11 +78,11 @@ def mock_bar(mocker):
     yield mocker.patch('matplotlib.pyplot.bar')
 def test_k_frequent_histogram_show (mock_bar) :
     k = 5
-    frec = {'bien': 5, 'todo': 5, 'por': 5, 'hola': 4, 'estan': 4}
+    #frec = {'bien': 5, 'todo': 5, 'por': 5, 'hola': 4, 'estan': 4}
     file_dir = os.path.join(BASE_DIR, "ejemplos/data.pkl")
     cd.k_frequent_histogram (k,file_dir)
-    mock_bar.assert_called_once_with(frec.keys(), frec.values(), 0.50, color='g')
-    
+    mock_bar.assert_called_once_with(['bien','todo','por','hola','estan'], [5,5,5,4,4], 0.50, color='g')
+ 
 
 
 def test_download_book():
