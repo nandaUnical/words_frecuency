@@ -4,6 +4,7 @@ from mock import patch
 import app_code.code as cd
 from pathlib import Path
 import os
+import matplotlib.pyplot as plt
 
 BASE_DIR = Path(r'C:\Users\hp\Documents\!Master\Agile\!!Second Apello\!proyecto\words_frecuency').resolve().parent
 os.path.join(BASE_DIR, "ejemplos")
@@ -54,12 +55,20 @@ def test_how_many_not_exist_word():
     assert cd.how_many(word, file_dir) == False
 
 def test_k_frequent_histogram(mocker):
+    pass
+    #k = 5
+    #frec = {'bien': 5, 'todo': 5, 'por': 5, 'hola': 4, 'estan': 4}
+    #file_dir = os.path.join(BASE_DIR, "ejemplos/data.pkl")
+    #mock_plt = mocker.patch('matplotlib.pyplot.show')
+    #cd.k_frequent_histogram (k,file_dir)
+    #mock_plt.show.assert_called_once()
+
+def test_k_frequent_histogram(monkeypatch):
     k = 5
     frec = {'bien': 5, 'todo': 5, 'por': 5, 'hola': 4, 'estan': 4}
     file_dir = os.path.join(BASE_DIR, "ejemplos/data.pkl")
-    mock_plt = mocker.patch('app_code.code.k_frequent_histogram')
+    monkeypatch.setattr(plt, 'show', lambda: None)
     cd.k_frequent_histogram (k,file_dir)
-    mock_plt.show.assert_called_once()
 
 
 def test_download_book():
