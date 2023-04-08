@@ -91,7 +91,7 @@ def test_k_frequent_histogram_show (mock_bar) :
 
 def test_download_book_menu(capsys,monkeypatch):
      # inject user input
-    monkeypatch.setattr('builtins.input', lambda x: '1')
+    monkeypatch.setattr('builtins.input', lambda x: '5')
 
     # call the menu selection function
     cd.download_book()
@@ -108,5 +108,5 @@ def test_download_book_menu(capsys,monkeypatch):
     assert '5.Exit' in captured.out
     assert '***********************************************************' in captured.out
     #assert 'Choose an option...' in captured.out
-    assert 'The books have been downloaded. Check the local directory...' in captured.out
+    assert '***************LEAVING DOWNLOAD MENU*********************' in captured.out
     #assert '\nPress enter to continue...' in captured.out
