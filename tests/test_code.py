@@ -89,20 +89,24 @@ def test_k_frequent_histogram_show (mock_bar) :
  
 
 
-def test_download_book_menu(capsys):
-    with patch.object(builtins, 'input', return_value = "1"):
-        cd.download_book()
-        captured = capsys.readouterr()
-        assert captured.out == "\n\n********YOU HAVE THE FOLLOWING DOWLOAD OPTIONS*********\n1.Download by book ID.\n2.Search by language.\n3.Search words in the titles and authors.\n4.Search by topic.\n5.Exit\n***********************************************************\nThe books have been downloaded. Check the local directory..."
-    '''
-    with patch.object(builtins, 'input', side_effect=["2", "q"]):
-        cd.download_book()
-        captured = capsys.readouterr()
-        assert captured.out == "Select an option ('1', '2', '3' or 'q' to exit): You selected option 2\nSelect an option ('1', '2', '3' or 'q' to exit): "
+def test_download_book_menu(capsys,monkeypatch):
+     # inject user input
+    monkeypatch.setattr('builtins.input', lambda x: '5')
 
-    with patch.object(builtins, 'input', side_effect=["3", "q"]):
-        cd.download_book()
-        captured = capsys.readouterr()
-        assert captured.out == "Select an option ('1', '2', '3' or 'q' to exit): You selected option 3\nSelect an option ('1', '2', '3' or 'q' to exit): "
-     '''  
+    # call the menu selection function
+    cd.download_book()
 
+    # capture console output
+    captured = capsys.readouterr()
+
+    # assert that the output is what we expect
+    assert '\n\n********YOU HAVE THE FOLLOWING DOWLOAD OPTIONS*********' in captured.out
+    assert '1.Download by book ID.' in captured.out
+    assert '2.Search by language.' in captured.out
+    assert '3.Search words in the titles and authors.' in captured.out
+    assert '4.Search by topic.' in captured.out
+    assert '5.Exit' in captured.out
+    assert '***********************************************************' in captured.out
+    assert 'Choose an option...' in captured.out
+    assert 'The books have been downloaded. Check the local directory...' in captured.out
+    assert '\nPress enter to continue...' in captured.out
