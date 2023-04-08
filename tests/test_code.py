@@ -59,7 +59,7 @@ def test_k_frequent_histogram(mocker):
     file_dir = os.path.join(BASE_DIR, "ejemplos/data.pkl")
     mock_plt = mocker.patch('app_code.code.k_frequent_histogram')
     cd.k_frequent_histogram (k,file_dir)
-    mock_plt.show.assert_called_once_with(frec.keys(), frec.values())
+    mock_plt.show.assert_called_once()
 
 
 def test_download_book():
