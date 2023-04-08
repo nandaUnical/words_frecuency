@@ -91,7 +91,7 @@ def test_k_frequent_histogram_show (mock_bar) :
 
 def test_download_book_menu(capsys,monkeypatch):
      # inject user input
-    monkeypatch.setattr('builtins.input', lambda x: '5')
+    monkeypatch.setattr('builtins.input', lambda x: '1')
 
     # call the menu selection function
     cd.download_book()
