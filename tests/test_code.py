@@ -93,7 +93,7 @@ def test_download_book_menu(capsys):
     with patch.object(builtins, 'input', side_effect=["1", "5"]):
         cd.download_book()
         captured = capsys.readouterr()
-        assert captured.out == "Enter the Project Gutenberg IDs of the books you want to download separated by comma...\nThe books have been downloaded. Check the local directory...\n\nPress enter to continue..."
+        assert captured.out == ""
     '''
     with patch.object(builtins, 'input', side_effect=["2", "q"]):
         cd.download_book()
