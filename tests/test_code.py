@@ -69,6 +69,7 @@ def test_k_frequent_histogram(monkeypatch):
     file_dir = os.path.join(BASE_DIR, "ejemplos/data.pkl")
     monkeypatch.setattr(plt, 'show', lambda: None)
     cd.k_frequent_histogram (k,file_dir)
+    monkeypatch.show.assert_called_once()
 
 
 def test_download_book():
