@@ -57,7 +57,7 @@ def test_k_frequent_histogram(mocker):
     k = 5
     frec = {'bien': 5, 'todo': 5, 'por': 5, 'hola': 4, 'estan': 4}
     file_dir = os.path.join(BASE_DIR, "ejemplos/data.pkl")
-    mock_plt = mocker.patch(__name__+'matplotlib.pyplot.show')
+    mock_plt = mocker.patch('matplotlib.pyplot.show')
     cd.k_frequent_histogram (k,file_dir)
     mock_plt.show.assert_called_once_with(frec.keys(), frec.values())
 
