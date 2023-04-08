@@ -93,7 +93,7 @@ def test_download_book_menu(capsys):
     with patch.object(builtins, 'input', side_effect=["1", "5"]):
         cd.download_book()
         captured = capsys.readouterr()
-        assert captured.out == "\n\n********YOU HAVE THE FOLLOWING DOWLOAD OPTIONS*********\n1.Download by book ID.\n2.Search by language.\n3.Search words in the titles and authors.\n4.Search by topic.\n5.Exit\n***********************************************************\nThe books have been downloaded. Check the local directory..."
+        assert captured.out == "\n\n********YOU HAVE THE FOLLOWING DOWLOAD OPTIONS*********\n1.Download by book ID.\n2.Search by language.\n3.Search words in the titles and authors.\n4.Search by topic.\n5.Exit\n***********************************************************\nChoose an option...\nThe books have been downloaded. Check the local directory...\n\nPress enter to continue..."
     '''
     with patch.object(builtins, 'input', side_effect=["2", "q"]):
         cd.download_book()
