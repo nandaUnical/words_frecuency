@@ -53,8 +53,14 @@ def test_how_many_not_exist_word():
     file_dir = os.path.join(BASE_DIR, "ejemplos/data.pkl")
     assert cd.how_many(word, file_dir) == False
 
-def test_k_frequent_histogram():
-    pass
+def test_k_frequent_histogram(mocker):
+    k = 5
+    frec = {'bien': 5, 'todo': 5, 'por': 5, 'hola': 4, 'estan': 4}
+    file_dir = os.path.join(BASE_DIR, "ejemplos/data.pkl")
+    mock_plt = mocker.patch('matplotlib.pyplot')
+    cd.k_frequent_histogram (k,file_dir)
+    mock_plt.plot.assert_called_once_with(frec.keys(), frec.values())
+
 
 def test_download_book():
     pass
