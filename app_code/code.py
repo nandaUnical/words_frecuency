@@ -5,6 +5,7 @@ import os
 import pickle
 import matplotlib.pyplot as plt
 import requests
+from pathlib import Path
 import json
 
 #calcular la frecuencia de las palabras dado un directorio
@@ -121,10 +122,13 @@ def download_book ():
             else:            
                 res = json.loads(res.text)
                 temp = res["results"]
+                BASE_DIR = Path(__file__).resolve().parent.parent
                 for i in temp :
                     url = i["formats"]["application/epub+zip"]
                     t = requests.get(str(url), allow_redirects=True)
-                    open('..\\downloaded_books\\book_id_'+str(i["id"])+'.epub', 'wb').write(t.content)
+                    temp_path = f"ejemplos/book_id_{str(i['id'])}.epub"
+                    dir_path = os.path.join(BASE_DIR, temp_path)
+                    open(dir_path, 'wb').write(t.content)
                 print("The books have been downloaded. Check the local directory...")
         
 
