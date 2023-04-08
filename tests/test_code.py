@@ -7,7 +7,7 @@ import os
 import matplotlib.pyplot as plt
 import builtins
 
-BASE_DIR = Path(r'C:\Users\hp\Documents\!Master\Agile\!!Second Apello\!proyecto\words_frecuency').resolve().parent
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 #Test correct dict by reading a dir
 def test_read_dir_frec ():
