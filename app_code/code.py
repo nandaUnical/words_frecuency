@@ -109,7 +109,7 @@ def download_by_id ():
         for i in temp :
             url = i["formats"]["application/epub+zip"]
             t = requests.get(str(url), allow_redirects=True)
-            temp_path = f"ejemplos/book_id_{str(i['id'])}.epub"
+            temp_path = f"downloaded_books/book_id_{str(i['id'])}.epub"
             dir_path = os.path.join(BASE_DIR, temp_path)
             open(dir_path, 'wb').write(t.content)
         print("The books have been downloaded. Check the local directory...")
