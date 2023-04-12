@@ -90,6 +90,121 @@ def k_frequent_histogram (k,file_dir):
     plt.bar(keys_list, values_list, 0.50, color='g')
     plt.show()
 
+#Opcion 1 menu download
+def download_by_id ():
+    ids = input('Enter the Project Gutenberg IDs of the books you want to download separated by comma...')
+    t_ids = ids.split(',')
+    for id in t_ids:
+        if not id.isdigit():
+            print('Wrong id, it should be a number, try again...')
+            return False
+    try:
+        res = requests.get('https://gutendex.com/books?ids='+str(ids))
+    except:
+        print("Error: Unable to connect to the Project Gutenberg website.")
+    else:            
+        res = json.loads(res.text)
+        temp = res["results"]
+        BASE_DIR = Path(__file__).resolve().parent.parent
+        for i in temp :
+            url = i["formats"]["application/epub+zip"]
+            t = requests.get(str(url), allow_redirects=True)
+            temp_path = f"ejemplos/book_id_{str(i['id'])}.epub"
+            dir_path = os.path.join(BASE_DIR, temp_path)
+            open(dir_path, 'wb').write(t.content)
+        print("The books have been downloaded. Check the local directory...")
+        return res
+
+#Auxiliar function to print books names to console
+def print_books (res):
+    counter = 0
+    list_books = res["results"]
+    for i in list_books :
+        counter = counter +1
+        print ("Book title "+str(counter)+": ", i["title"], "\tID: ", i["id"])
+    while str(res["next"]) != "None" :
+        res = requests.get(str(res["next"]))
+        res = json.loads(res.text)
+        list_books = res["results"]
+        for i in list_books :
+            counter = counter +1
+            print ("Book title"+str(counter)+": ", i["title"], "\tID: ", i["id"])
+
+#Opcion 2 menu download
+def search_by_lang ():
+    counter = 0
+    lang = input("Enter the code of the languages separated by & in case there are two or more...")
+    res = requests.get('https://gutendex.com/books?languages='+str(lang))
+    res = json.loads(res.text)
+    print("There are "+str(res["count"])+" books.")
+    q = input ("Do you wanna list them?\t")
+    if q.lower()=="yes":
+        #temp = res["results"]
+        print_books(res)
+        return res["count"]
+    else:
+        pass
+
+#Opcion 3 menu download
+def search_in_title ():
+    #counter = 0
+    lang = ""
+    words = input("Enter the words you want to search separated by comma...")
+    words = words.split(", ")
+    for w in words:
+        lang += w+"%20"
+    res = requests.get('https://gutendex.com/books?search='+lang[:-3])
+    res = json.loads(res.text)
+    print("There are "+str(res["count"])+" books.")
+    q = input ("Do you wanna list them?\t")
+    if q.lower()=="yes":
+        #temp = res["results"]
+        '''
+        for i in temp :
+            counter = counter +1
+            print ("Book title "+str(counter)+": ", i["title"], "\tID: ", i["id"])
+        while str(res["next"]) != "None" :
+            res = requests.get(str(res["next"]))
+            res = json.loads(res.text)
+            temp = res["results"]
+            for i in temp :
+                counter = counter +1
+                print ("Book title"+str(counter)+": ", i["title"], "\tID: ", i["id"])'''
+        print_books(res)
+        return res["count"]
+    else:
+        pass
+
+#opcion 4 menu download
+def search_by_topic():
+    counter = 0
+    lang = ""
+    words = input("Enter the words you want to search separated by comma...")
+    words = words.split(", ")
+    for w in words:
+        lang += w+"%20"
+    res = requests.get('https://gutendex.com/books?topic='+lang[:-3])
+    res = json.loads(res.text)
+    print("There are "+str(res["count"])+" books.")
+    q = input ("Do you wanna list them?\t")
+    if q.lower()=="yes":
+        #temp = res["results"]
+        '''
+        for i in temp :
+            counter = counter +1
+            print ("Book title "+str(counter)+": ", i["title"], "\tID: ", i["id"])
+        while str(res["next"]) != "None" :
+            res = requests.get(str(res["next"]))
+            res = json.loads(res.text)
+            temp = res["results"]
+            for i in temp :
+                counter = counter +1
+                print ("Book title"+str(counter)+": ", i["title"], "\tID: ", i["id"])'''
+        print_books(res)
+        return res["count"]
+    else:
+        pass
+
 #Descargar libros de project gutenberg segun varios criterios de busqueda
 def download_book ():
     #Menu de opciones de descarga
@@ -114,97 +229,16 @@ def download_book ():
                 option = input("Choose a correct option...")
 
         if option == "1" :
-            ids = input('Enter the Project Gutenberg IDs of the books you want to download separated by comma...')
-            try:
-                res = requests.get('https://gutendex.com/books?ids='+str(ids))
-            except:
-               print("Error: Unable to connect to the Project Gutenberg website.")
-            else:            
-                res = json.loads(res.text)
-                temp = res["results"]
-                BASE_DIR = Path(__file__).resolve().parent.parent
-                for i in temp :
-                    url = i["formats"]["application/epub+zip"]
-                    t = requests.get(str(url), allow_redirects=True)
-                    temp_path = f"ejemplos/book_id_{str(i['id'])}.epub"
-                    dir_path = os.path.join(BASE_DIR, temp_path)
-                    open(dir_path, 'wb').write(t.content)
-                print("The books have been downloaded. Check the local directory...")
-        
+           download_by_id()                    
 
         elif option == "2" :
-            counter = 0
-            lang = input("Enter the code of the languages separated by & in case there are two or more...")
-            res = requests.get('https://gutendex.com/books?languages='+str(lang))
-            res = json.loads(res.text)
-            print("There are "+str(res["count"])+" books.")
-            q = input ("Do you wanna list them?\t")
-            if q.lower()=="yes":
-              temp = res["results"]
-              for i in temp :
-                counter = counter +1
-                print ("Book title "+str(counter)+": ", i["title"], "\tID: ", i["id"])
-              while str(res["next"]) != "None" :
-                res = requests.get(str(res["next"]))
-                res = json.loads(res.text)
-                temp = res["results"]
-                for i in temp :
-                  counter = counter +1
-                  print ("Book title"+str(counter)+": ", i["title"], "\tID: ", i["id"])
-            else:
-              pass
+            search_by_lang()
 
         elif option == "3" :
-            counter = 0
-            lang = ""
-            words = input("Enter the words you want to search separated by comma...")
-            words = words.split(", ")
-            for w in words:
-              lang += w+"%20"
-            res = requests.get('https://gutendex.com/books?search='+lang[:-3])
-            res = json.loads(res.text)
-            print("There are "+str(res["count"])+" books.")
-            q = input ("Do you wanna list them?\t")
-            if q.lower()=="yes":
-              temp = res["results"]
-              for i in temp :
-                counter = counter +1
-                print ("Book title "+str(counter)+": ", i["title"], "\tID: ", i["id"])
-              while str(res["next"]) != "None" :
-                res = requests.get(str(res["next"]))
-                res = json.loads(res.text)
-                temp = res["results"]
-                for i in temp :
-                  counter = counter +1
-                  print ("Book title"+str(counter)+": ", i["title"], "\tID: ", i["id"])
-            else:
-              pass
+            search_in_title()
        
         elif option == "4":
-            counter = 0
-            lang = ""
-            words = input("Enter the words you want to search separated by comma...")
-            words = words.split(", ")
-            for w in words:
-              lang += w+"%20"
-            res = requests.get('https://gutendex.com/books?topic='+lang[:-3])
-            res = json.loads(res.text)
-            print("There are "+str(res["count"])+" books.")
-            q = input ("Do you wanna list them?\t")
-            if q.lower()=="yes":
-              temp = res["results"]
-              for i in temp :
-                counter = counter +1
-                print ("Book title "+str(counter)+": ", i["title"], "\tID: ", i["id"])
-              while str(res["next"]) != "None" :
-                res = requests.get(str(res["next"]))
-                res = json.loads(res.text)
-                temp = res["results"]
-                for i in temp :
-                  counter = counter +1
-                  print ("Book title"+str(counter)+": ", i["title"], "\tID: ", i["id"])
-            else:
-              pass
+            search_by_topic()
       
         elif option == "5":
             exit_menu_value = True

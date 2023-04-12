@@ -6,6 +6,8 @@ from pathlib import Path
 import os
 import matplotlib.pyplot as plt
 import builtins
+import requests
+import json
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -70,7 +72,7 @@ def mock_show(mocker):
     yield mocker.patch('matplotlib.pyplot.show')
 def test_k_frequent_histogram_show (mock_show) :
     k = 5
-    frec = {'bien': 5, 'todo': 5, 'por': 5, 'hola': 4, 'estan': 4}
+    #frec = {'bien': 5, 'todo': 5, 'por': 5, 'hola': 4, 'estan': 4}
     file_dir = os.path.join(BASE_DIR, "ejemplos/data.pkl")
     cd.k_frequent_histogram (k,file_dir)
     mock_show.assert_called_once()
@@ -87,7 +89,7 @@ def test_k_frequent_histogram_show (mock_bar) :
     mock_bar.assert_called_once_with(['bien','todo','por','hola','estan'], [5,5,5,4,4], 0.50, color='g')
  
 
-
+#Testing the print in option 5 download menu
 def test_download_book_menu(capsys,monkeypatch):
      # inject user input
     monkeypatch.setattr('builtins.input', lambda x: '5')
@@ -109,3 +111,37 @@ def test_download_book_menu(capsys,monkeypatch):
     #assert 'Choose an option...' in captured.out
     assert '***************LEAVING DOWNLOAD MENU*********************' in captured.out
     #assert '\nPress enter to continue...' in captured.out
+
+
+def test_download_by_id(monkeypatch):
+    monkeypatch.setattr('builtins.input', lambda x: '1')
+    res = cd.download_by_id()
+    assert type(res) is dict
+
+    assert res["results"][0]["id"] == 1
+
+def test_download_by_mult_id(monkeypatch):
+    monkeypatch.setattr('builtins.input', lambda x: '1,2,3')
+    res = cd.download_by_id()
+
+    for i in res["results"] :
+        assert i["id"] in [1,2,3]
+
+#Test when no listing books
+def test_search_by_lang_print_call (mocker, monkeypatch):
+    #file_dir = os.path.join(BASE_DIR, "ejemplos")
+    monkeypatch.setattr('builtins.input', lambda x: 'it')
+    printer = mocker.patch('builtins.print')
+    cd.search_by_lang()
+    assert printer.call_count == 1
+
+#Test print_books function
+def test_print_book (mocker):
+    url = requests.get('https://gutendex.com/books?ids=1,2,3')
+    res = json.loads(url.text)
+    printer = mocker.patch('builtins.print')
+    cd.print_books(res)
+    assert printer.call_count == res["count"]
+
+    
+        
