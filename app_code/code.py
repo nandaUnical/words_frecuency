@@ -51,7 +51,7 @@ def most_frequent (k,file_dir):
     #cargar el diccionario guardado en el pkl file
     with open(file_dir, 'rb') as fp:
         frec = pickle.load(fp)
-    if k > len(frec):
+    if int(k) > len(frec):
        print ( "There are not "+str(k)+" words in the vocabulary..." )
     res = dict(list(frec.items())[0:int(k)])
     print("\nThe most frequent words in the collection of documents are:")
@@ -91,6 +91,7 @@ def k_frequent_histogram (k,file_dir):
 
 #Opcion 1 menu download
 def download_by_id (ids):
+    ids = ids.replace(" ", "")
     t_ids = ids.split(',')
     for id in t_ids:
         if not id.isdigit():
@@ -130,6 +131,7 @@ def print_books (res):
 
 #Opcion 2 menu download
 def search_by_lang (lang):
+    lang = lang.replace(" ", "")
     res = requests.get('https://gutendex.com/books?languages='+str(lang))
     res = json.loads(res.text)
     print("There are "+str(res["count"])+" books.")
@@ -143,7 +145,8 @@ def search_by_lang (lang):
 #Opcion 3 menu download
 def search_in_title (words):
     lang = ""
-    words = words.split(", ")
+    words = words.replace(" ", "")
+    words = words.split(",")
     for w in words:
         lang += w+"%20"
     res = requests.get('https://gutendex.com/books?search='+lang[:-3])
@@ -159,7 +162,8 @@ def search_in_title (words):
 #opcion 4 menu download
 def search_by_topic(words):
     lang = ""
-    words = words.split(", ")
+    words = words.replace(" ", "")
+    words = words.split(",")
     for w in words:
         lang += w+"%20"
     res = requests.get('https://gutendex.com/books?topic='+lang[:-3])
@@ -177,7 +181,7 @@ def download_book ():
     #Menu de opciones de descarga
     exit_menu_value = False
     while exit_menu_value == False:
-        print("\n\n********YOU HAVE THE FOLLOWING DOWLOAD OPTIONS*********")
+        print("\n\n********YOU HAVE THE FOLLOWING DOWNLOAD OPTIONS*********")
         print("1.Download by book ID.")
         print("2.Search by language.")
         print("3.Search words in the titles and authors.")
@@ -200,7 +204,7 @@ def download_book ():
            download_by_id(ids)                    
 
         elif option == "2" :
-            lang = input("Enter the code of the languages separated by & in case there are two or more...")
+            lang = input("Enter the code of the languages separated by comma in case there are two or more...")
             search_by_lang(lang)
 
         elif option == "3" :
