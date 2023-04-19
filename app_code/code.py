@@ -91,8 +91,7 @@ def k_frequent_histogram (k,file_dir):
     plt.show()
 
 #Opcion 1 menu download
-def download_by_id ():
-    ids = input('Enter the Project Gutenberg IDs of the books you want to download separated by comma...')
+def download_by_id (ids):
     t_ids = ids.split(',')
     for id in t_ids:
         if not id.isdigit():
@@ -131,25 +130,20 @@ def print_books (res):
             print ("Book title"+str(counter)+": ", i["title"], "\tID: ", i["id"])
 
 #Opcion 2 menu download
-def search_by_lang ():
-    counter = 0
-    lang = input("Enter the code of the languages separated by & in case there are two or more...")
+def search_by_lang (lang):
     res = requests.get('https://gutendex.com/books?languages='+str(lang))
     res = json.loads(res.text)
     print("There are "+str(res["count"])+" books.")
     q = input ("Do you wanna list them?\t")
     if q.lower()=="yes":
-        #temp = res["results"]
         print_books(res)
         return res["count"]
     else:
         pass
 
 #Opcion 3 menu download
-def search_in_title ():
-    #counter = 0
+def search_in_title (words):
     lang = ""
-    words = input("Enter the words you want to search separated by comma...")
     words = words.split(", ")
     for w in words:
         lang += w+"%20"
@@ -158,28 +152,14 @@ def search_in_title ():
     print("There are "+str(res["count"])+" books.")
     q = input ("Do you wanna list them?\t")
     if q.lower()=="yes":
-        #temp = res["results"]
-        '''
-        for i in temp :
-            counter = counter +1
-            print ("Book title "+str(counter)+": ", i["title"], "\tID: ", i["id"])
-        while str(res["next"]) != "None" :
-            res = requests.get(str(res["next"]))
-            res = json.loads(res.text)
-            temp = res["results"]
-            for i in temp :
-                counter = counter +1
-                print ("Book title"+str(counter)+": ", i["title"], "\tID: ", i["id"])'''
         print_books(res)
         return res["count"]
     else:
         pass
 
 #opcion 4 menu download
-def search_by_topic():
-    counter = 0
+def search_by_topic(words):
     lang = ""
-    words = input("Enter the words you want to search separated by comma...")
     words = words.split(", ")
     for w in words:
         lang += w+"%20"
@@ -188,18 +168,6 @@ def search_by_topic():
     print("There are "+str(res["count"])+" books.")
     q = input ("Do you wanna list them?\t")
     if q.lower()=="yes":
-        #temp = res["results"]
-        '''
-        for i in temp :
-            counter = counter +1
-            print ("Book title "+str(counter)+": ", i["title"], "\tID: ", i["id"])
-        while str(res["next"]) != "None" :
-            res = requests.get(str(res["next"]))
-            res = json.loads(res.text)
-            temp = res["results"]
-            for i in temp :
-                counter = counter +1
-                print ("Book title"+str(counter)+": ", i["title"], "\tID: ", i["id"])'''
         print_books(res)
         return res["count"]
     else:
@@ -229,16 +197,20 @@ def download_book ():
                 option = input("Choose a correct option...")
 
         if option == "1" :
-           download_by_id()                    
+           ids = input('Enter the Project Gutenberg IDs of the books you want to download separated by comma...')
+           download_by_id(ids)                    
 
         elif option == "2" :
-            search_by_lang()
+            lang = input("Enter the code of the languages separated by & in case there are two or more...")
+            search_by_lang(lang)
 
         elif option == "3" :
-            search_in_title()
+            words = input("Enter the words you want to search separated by comma...")
+            search_in_title(words)
        
         elif option == "4":
-            search_by_topic()
+            words = input("Enter the words you want to search separated by comma...")
+            search_by_topic(words)
       
         elif option == "5":
             exit_menu_value = True

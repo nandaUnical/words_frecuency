@@ -1,13 +1,9 @@
 import pytest
 import sys
-from mock import patch
+from mock import patch, MagicMock
 import app_code.code as cd
 from pathlib import Path
 import os
-import matplotlib.pyplot as plt
-import builtins
-import requests
-import json
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -57,22 +53,12 @@ def test_how_many_not_exist_word():
     file_dir = os.path.join(BASE_DIR, "ejemplos/data.pkl")
     assert cd.how_many(word, file_dir) == False
 
-#Test the matplotlib.pyplot.show call with monkeypatch
-#def test_k_frequent_histogram_monkey(monkeypatch):
-#    k = 5
-#    frec = {'bien': 5, 'todo': 5, 'por': 5, 'hola': 4, 'estan': 4}
-#    file_dir = os.path.join(BASE_DIR, "ejemplos/data.pkl")
-#    mock_show = lambda: None
-#    monkeypatch.setattr(plt, 'show', mock_show)
-#    cd.k_frequent_histogram (k,file_dir)
-
 #Test the matplotlib.pyplot.show call with a mock fixture
 @pytest.fixture
 def mock_show(mocker):
     yield mocker.patch('matplotlib.pyplot.show')
 def test_k_frequent_histogram_show (mock_show) :
     k = 5
-    #frec = {'bien': 5, 'todo': 5, 'por': 5, 'hola': 4, 'estan': 4}
     file_dir = os.path.join(BASE_DIR, "ejemplos/data.pkl")
     cd.k_frequent_histogram (k,file_dir)
     mock_show.assert_called_once()
@@ -83,7 +69,6 @@ def mock_bar(mocker):
     yield mocker.patch('matplotlib.pyplot.bar')
 def test_k_frequent_histogram_show (mock_bar) :
     k = 5
-    #frec = {'bien': 5, 'todo': 5, 'por': 5, 'hola': 4, 'estan': 4}
     file_dir = os.path.join(BASE_DIR, "ejemplos/data.pkl")
     cd.k_frequent_histogram (k,file_dir)
     mock_bar.assert_called_once_with(['bien','todo','por','hola','estan'], [5,5,5,4,4], 0.50, color='g')
@@ -91,13 +76,8 @@ def test_k_frequent_histogram_show (mock_bar) :
 
 #Testing the print in option 5 download menu
 def test_download_book_menu(capsys,monkeypatch):
-     # inject user input
     monkeypatch.setattr('builtins.input', lambda x: '5')
-
-    # call the menu selection function
     cd.download_book()
-
-    # capture console output
     captured = capsys.readouterr()
 
     # assert that the output is what we expect
@@ -113,33 +93,144 @@ def test_download_book_menu(capsys,monkeypatch):
     #assert '\nPress enter to continue...' in captured.out
 
 
-def test_download_by_id(monkeypatch):
-    monkeypatch.setattr('builtins.input', lambda x: '1')
-    res = cd.download_by_id()
+#Testing we are getting a dictionary from the web page and we get the correct book
+def test_download_by_id():
+    ids = "1"
+    res = cd.download_by_id(ids)
     assert type(res) is dict
 
     assert res["results"][0]["id"] == 1
 
-def test_download_by_mult_id(monkeypatch):
-    monkeypatch.setattr('builtins.input', lambda x: '1,2,3')
-    res = cd.download_by_id()
+#Testing that we get the corrects books when we get multiple ids 
+def test_download_by_mult_id():
+    ids = "1,2,3"
+    res = cd.download_by_id(ids)
 
     for i in res["results"] :
         assert i["id"] in [1,2,3]
 
 #Test when no listing books
 def test_search_by_lang_print_call (mocker, monkeypatch):
-    #file_dir = os.path.join(BASE_DIR, "ejemplos")
-    monkeypatch.setattr('builtins.input', lambda x: 'it')
+    monkeypatch.setattr('builtins.input', lambda x: 'no')
+    lang = 'it'
     printer = mocker.patch('builtins.print')
-    cd.search_by_lang()
+    cd.search_by_lang(lang)
     assert printer.call_count == 1
 
 #Test print_books function
 def test_print_book (mocker):
-    url = requests.get('https://gutendex.com/books?ids=1,2,3')
-    res = json.loads(url.text)
     printer = mocker.patch('builtins.print')
+    res = {
+        "count": 3,
+        "next": None,
+        "previous": None,
+        "results": [
+            {
+            "id": 1,
+            "title": "The Declaration of Independence of the United States of America",
+            "authors": [
+                {
+                "name": "Jefferson, Thomas",
+                "birth_year": 1743,
+                "death_year": 1826
+                }
+            ],
+            "translators": [],
+            "subjects": [
+                "United States -- History -- Revolution, 1775-1783 -- Sources",
+                "United States. Declaration of Independence"
+            ],
+            "bookshelves": [
+                "American Revolutionary War",
+                "Politics",
+                "United States Law"
+            ],
+            "languages": [
+                "en"
+            ],
+            "copyright": False,
+            "media_type": "Text",
+            "formats": {
+                "application/x-mobipocket-ebook": "https://www.gutenberg.org/ebooks/1.kf8.images",
+                "application/epub+zip": "https://www.gutenberg.org/ebooks/1.epub3.images",
+                "text/html": "https://www.gutenberg.org/ebooks/1.html.images",
+                "image/jpeg": "https://www.gutenberg.org/cache/epub/1/pg1.cover.medium.jpg",
+                "text/plain; charset=us-ascii": "https://www.gutenberg.org/files/1/1-0.txt",
+                "text/plain": "https://www.gutenberg.org/ebooks/1.txt.utf-8",
+                "application/rdf+xml": "https://www.gutenberg.org/ebooks/1.rdf"
+            },
+            "download_count": 1165
+            },
+            {
+            "id": 2,
+            "title": "The United States Bill of Rights: The Ten Original Amendments to the Constitution of the United States",
+            "authors": [
+                {
+                "name": "United States",
+                "birth_year": None,
+                "death_year": None
+                }
+            ],
+            "translators": [],
+            "subjects": [
+                "Civil rights -- United States -- Sources",
+                "United States. Constitution. 1st-10th Amendments"
+            ],
+            "bookshelves": [
+                "American Revolutionary War",
+                "Politics",
+                "United States Law"
+            ],
+            "languages": [
+                "en"
+            ],
+            "copyright": False,
+            "media_type": "Text",
+            "formats": {
+                "application/x-mobipocket-ebook": "https://www.gutenberg.org/ebooks/2.kf8.images",
+                "application/epub+zip": "https://www.gutenberg.org/ebooks/2.epub3.images",
+                "text/html": "https://www.gutenberg.org/ebooks/2.html.images",
+                "image/jpeg": "https://www.gutenberg.org/cache/epub/2/pg2.cover.medium.jpg",
+                "text/plain; charset=us-ascii": "https://www.gutenberg.org/files/2/2.txt",
+                "text/plain": "https://www.gutenberg.org/ebooks/2.txt.utf-8",
+                "application/rdf+xml": "https://www.gutenberg.org/ebooks/2.rdf"
+            },
+            "download_count": 648
+            },
+            {
+            "id": 3,
+            "title": "John F. Kennedy's Inaugural Address",
+            "authors": [
+                {
+                "name": "Kennedy, John F. (John Fitzgerald)",
+                "birth_year": 1917,
+                "death_year": 1963
+                }
+            ],
+            "translators": [],
+            "subjects": [
+                "Presidents -- United States -- Inaugural addresses",
+                "United States -- Foreign relations -- 1961-1963"
+            ],
+            "bookshelves": [],
+            "languages": [
+                "en"
+            ],
+            "copyright": False,
+            "media_type": "Text",
+            "formats": {
+                "application/x-mobipocket-ebook": "https://www.gutenberg.org/ebooks/3.kf8.images",
+                "application/epub+zip": "https://www.gutenberg.org/ebooks/3.epub3.images",
+                "text/html": "https://www.gutenberg.org/ebooks/3.html.images",
+                "image/jpeg": "https://www.gutenberg.org/cache/epub/3/pg3.cover.medium.jpg",
+                "text/plain; charset=us-ascii": "https://www.gutenberg.org/files/3/3.txt",
+                "text/plain": "https://www.gutenberg.org/ebooks/3.txt.utf-8",
+                "application/rdf+xml": "https://www.gutenberg.org/ebooks/3.rdf"
+            },
+            "download_count": 206
+            }
+        ]
+    }
     cd.print_books(res)
     assert printer.call_count == res["count"]
 
