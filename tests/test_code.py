@@ -22,7 +22,7 @@ def test_read_file_list_frec ():
 #Test print is called k+1 times in the function
 def test_most_frequent_print_call (mocker):
     k = 5
-    file_dir = os.path.join(BASE_DIR, "ejemplos/data.pkl")
+    file_dir = os.path.join(BASE_DIR, "ejemplos/frec_data.pkl")
     printer = mocker.patch('builtins.print')
     cd.most_frequent(k, file_dir)
     assert printer.call_count == k+1
@@ -30,13 +30,13 @@ def test_most_frequent_print_call (mocker):
 #Test correct most frequent dict
 def test_most_frequent_returned_dict ():
     k = 5
-    file_dir = os.path.join(BASE_DIR, "ejemplos/data.pkl")
+    file_dir = os.path.join(BASE_DIR, "ejemplos/frec_data.pkl")
     assert cd.most_frequent(k, file_dir) == {'bien': 5, 'todo': 5, 'por': 5, 'hola': 4, 'estan': 4}
     
 #Test that print is called once
 def test_how_many_print_call(mocker):
     word = 'bien'
-    file_dir = os.path.join(BASE_DIR, "ejemplos/data.pkl")
+    file_dir = os.path.join(BASE_DIR, "ejemplos/frec_data.pkl")
     printer = mocker.patch('builtins.print')
     cd.how_many(word, file_dir)
     assert printer.call_count == 1
@@ -44,13 +44,13 @@ def test_how_many_print_call(mocker):
 #Test the function with a correct word
 def test_how_many_exist_word():
     word = 'bien'
-    file_dir = os.path.join(BASE_DIR, "ejemplos/data.pkl")
+    file_dir = os.path.join(BASE_DIR, "ejemplos/frec_data.pkl")
     assert cd.how_many(word, file_dir) == True
 
 #Test the function with a wrong word
 def test_how_many_not_exist_word():
     word = 'adivinanza'
-    file_dir = os.path.join(BASE_DIR, "ejemplos/data.pkl")
+    file_dir = os.path.join(BASE_DIR, "ejemplos/frec_data.pkl")
     assert cd.how_many(word, file_dir) == False
 
 #Test the matplotlib.pyplot.show call with a mock fixture
@@ -59,7 +59,7 @@ def mock_show(mocker):
     yield mocker.patch('matplotlib.pyplot.show')
 def test_k_frequent_histogram_show (mock_show) :
     k = 5
-    file_dir = os.path.join(BASE_DIR, "ejemplos/data.pkl")
+    file_dir = os.path.join(BASE_DIR, "ejemplos/frec_data.pkl")
     cd.k_frequent_histogram (k,file_dir)
     mock_show.assert_called_once()
 
@@ -69,7 +69,7 @@ def mock_bar(mocker):
     yield mocker.patch('matplotlib.pyplot.bar')
 def test_k_frequent_histogram_show (mock_bar) :
     k = 5
-    file_dir = os.path.join(BASE_DIR, "ejemplos/data.pkl")
+    file_dir = os.path.join(BASE_DIR, "ejemplos/frec_data.pkl")
     cd.k_frequent_histogram (k,file_dir)
     mock_bar.assert_called_once_with(['bien','todo','por','hola','estan'], [5,5,5,4,4], 0.50, color='g')
  

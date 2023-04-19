@@ -60,7 +60,6 @@ def most_frequent (k,file_dir):
 
     return res
 
-
 #Mostrar cuantas veces x aparece en el texto
 def how_many (word, file_dir):
     #cargar el diccionario guardado en el pkl file
