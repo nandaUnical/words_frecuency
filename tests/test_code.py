@@ -81,7 +81,7 @@ def test_download_book_menu(capsys,monkeypatch):
     captured = capsys.readouterr()
 
     # assert that the output is what we expect
-    assert '********YOU HAVE THE FOLLOWING DOWLOAD OPTIONS*********' in captured.out
+    assert '********YOU HAVE THE FOLLOWING DOWNLOAD OPTIONS*********' in captured.out
     assert '1.Download by book ID.' in captured.out
     assert '2.Search by language.' in captured.out
     assert '3.Search words in the titles and authors.' in captured.out
