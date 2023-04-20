@@ -135,12 +135,12 @@ def search_by_lang (lang):
     res = requests.get('https://gutendex.com/books?languages='+str(lang))
     res = json.loads(res.text)
     print("There are "+str(res["count"])+" books.")
-    q = input ("Do you wanna list them?\t")
-    if q.lower()=="yes":
-        print_books(res)
-        return res["count"]
-    else:
-        pass
+    if res["count"] != 0:
+        q = input ("Do you wanna list them?(yes/no)\t")
+        if q.lower()=="yes":
+            print_books(res)
+            return res["count"]
+        
 
 #Opcion 3 menu download
 def search_in_title (words):
@@ -152,12 +152,11 @@ def search_in_title (words):
     res = requests.get('https://gutendex.com/books?search='+lang[:-3])
     res = json.loads(res.text)
     print("There are "+str(res["count"])+" books.")
-    q = input ("Do you wanna list them?\t")
-    if q.lower()=="yes":
-        print_books(res)
-        return res["count"]
-    else:
-        pass
+    if res["count"] != 0:
+        q = input ("Do you wanna list them?(yes/no)\t")
+        if q.lower()=="yes":
+            print_books(res)
+            return res["count"]
 
 #opcion 4 menu download
 def search_by_topic(words):
@@ -169,12 +168,11 @@ def search_by_topic(words):
     res = requests.get('https://gutendex.com/books?topic='+lang[:-3])
     res = json.loads(res.text)
     print("There are "+str(res["count"])+" books.")
-    q = input ("Do you wanna list them?\t")
-    if q.lower()=="yes":
-        print_books(res)
-        return res["count"]
-    else:
-        pass
+    if res["count"] != 0:
+        q = input ("Do you wanna list them?(yes/no)\t")
+        if q.lower()=="yes":
+            print_books(res)
+            return res["count"]
 
 #Descargar libros de project gutenberg segun varios criterios de busqueda
 def download_book ():
@@ -200,19 +198,19 @@ def download_book ():
                 option = input("Choose a correct option...")
 
         if option == "1" :
-           ids = input('Enter the Project Gutenberg IDs of the books you want to download separated by comma...')
+           ids = input('Enter the Project Gutenberg IDs of the books you want to download separated by comma...\t')
            download_by_id(ids)                    
 
         elif option == "2" :
-            lang = input("Enter the code of the languages separated by comma in case there are two or more...")
+            lang = input("Enter the code of the languages separated by comma in case there are two or more...\t")
             search_by_lang(lang)
 
         elif option == "3" :
-            words = input("Enter the words you want to search separated by comma...")
+            words = input("Enter the words you want to search separated by comma...\t")
             search_in_title(words)
        
         elif option == "4":
-            words = input("Enter the words you want to search separated by comma...")
+            words = input("Enter the words you want to search separated by comma...\t")
             search_by_topic(words)
       
         elif option == "5":
@@ -262,11 +260,11 @@ if __name__ == "__main__":
             for w in frec.keys():
                 print("word: ", w, "\tfrequency: ", frec[w])  
         elif option == "2" :
-            most_frequent(k=input("Enter the number of words..."),file_dir='..\\ejemplos\\frec_data.pkl')
+            most_frequent(k=input("Enter the number of words...\t"),file_dir='..\\ejemplos\\frec_data.pkl')
         elif option == "3" :
-            how_many(word=input("Enter a word to search for..."),file_dir='..\\ejemplos\\frec_data.pkl')
+            how_many(word=input("Enter a word to search for...\t"),file_dir='..\\ejemplos\\frec_data.pkl')
         elif option == "4" :
-            k_frequent_histogram(k=input("Enter the number of words..."),file_dir='..\\ejemplos\\frec_data.pkl')
+            k_frequent_histogram(k=input("Enter the number of words...\t"),file_dir='..\\ejemplos\\frec_data.pkl')
         elif option == "5":
             download_book()
         elif option == "6":
