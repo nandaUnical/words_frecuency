@@ -32,11 +32,11 @@ It supports the following features:
   
 + To download the books another interactive menu is offered with the following options:
 
-  – Download a book from its ID in Project Gutenberg books collection. The input must be comma separeted:
+  – Download a book from its ID in Project Gutenberg books collection. The results are saved in the downloades_books folder.  The input must be comma separeted:
       
       ` 1 `    or    ` 1,2,3 `   or   ` 1  ,2,  3 ` are equivalents.
      
-  – Search books by languague. The input must be comma separeted and with the code of the laguague.
+  – Search books by languague. The input must be comma separeted and with the code of the laguague. You will be able to list the names and ids of books that match your search terms.
   
       ` it `    or    ` it, es `   or   ` it,   es,en ` some examples.
       
