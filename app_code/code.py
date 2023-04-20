@@ -198,19 +198,19 @@ def download_book ():
                 option = input("Choose a correct option...")
 
         if option == "1" :
-           ids = input('Enter the Project Gutenberg IDs of the books you want to download separated by comma...\t')
+           ids = input('Enter the Project Gutenberg IDs of the books you want to download separated by comma... ')
            download_by_id(ids)                    
 
         elif option == "2" :
-            lang = input("Enter the code of the languages separated by comma in case there are two or more...\t")
+            lang = input("Enter the code of the languages separated by comma in case there are two or more... ")
             search_by_lang(lang)
 
         elif option == "3" :
-            words = input("Enter the words you want to search separated by comma...\t")
+            words = input("Enter the words you want to search separated by comma... ")
             search_in_title(words)
        
         elif option == "4":
-            words = input("Enter the words you want to search separated by comma...\t")
+            words = input("Enter the words you want to search separated by comma... ")
             search_by_topic(words)
       
         elif option == "5":
