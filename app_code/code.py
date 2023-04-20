@@ -259,7 +259,8 @@ if __name__ == "__main__":
                 option = input("Choose a correct option...")
 
         if option == "1":
-           print(frec)    
+            for w in frec.keys():
+                print("word: ", w, "\tfrequency: ", frec[w])  
         elif option == "2" :
             most_frequent(k=input("Enter the number of words..."),file_dir='..\\ejemplos\\frec_data.pkl')
         elif option == "3" :
